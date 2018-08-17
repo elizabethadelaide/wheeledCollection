@@ -39,23 +39,27 @@ public class AccelAnalysisTest {
         AccelAnalysis aa = new AccelAnalysis();
         int bufferSize = aa.getBufferSize();
         for (int i = 0; i < bufferSize; i++){
-            for (int i = 0; i < xyz.length; i++) {
-                xyz[i] = (float)(Math.random()*0.1);
+            for (int k = 0; k < xyz.length; k++) {
+                xyz[k] = (float)(Math.random()*0.1);
             }
+            aa.push(xyz);
         }
-        double lowValue = aa.classifyNoise();
+        double lowValue = aa.getVariance();
         for (int i = 0; i < bufferSize; i++){
-            for (int i = 0; i < xyz.length; i++) {
-                xyz[i] = (float)(Math.random()*0.5);
+            for (int k = 0; k < xyz.length; k++) {
+                xyz[k] = (float)(Math.random()*0.5);
             }
+            aa.push(xyz);
         }
-        double mediumValue = aa.classifyNoise();
+        double mediumValue = aa.getVariance();
         for (int i = 0; i < bufferSize; i++){
-            for (int i = 0; i < xyz.length; i++) {
-                xyz[i] = (float)(Math.random()*1.0);
+            for (int k = 0; k < xyz.length; k++) {
+                xyz[k] = (float)(Math.random()*1.0);
             }
+            aa.push(xyz);
         }
-        double highValue = aa.classifyNoise();
+        double highValue = aa.getVariance();
+        Assert.assertTrue(lowValue != 0.0 && mediumValue != 0.0 && highValue != 0.0);
         Assert.assertTrue(lowValue < mediumValue);
         Assert.assertTrue(mediumValue < highValue);
     }
